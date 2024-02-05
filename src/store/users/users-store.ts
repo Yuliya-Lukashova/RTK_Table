@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import type { User } from '../types';
-import { fetchUsers } from './usersThunks';
+import { fetchUsers } from './users-thunks';
 
 interface UsersState {
   users: User[];
@@ -39,10 +39,15 @@ const usersSlice = createSlice({
         state.users = action.payload;
         }
         state.usersError = '';
+      })
+      .addCase(fetchUsers.rejected, (state, action) => {
+        state.isLoading = false;
+        if (typeof action.error.message === 'string')
+        state.usersError = action.error.message; 
       });
   },
 });
 
 export const { setUsers, setUsersError } = usersSlice.actions;
 
-export default usersSlice;
+export default usersSlice.reducer;

@@ -4,7 +4,7 @@ import {
 } from '@reduxjs/toolkit';
 
 import type { Post } from '../types';
-import { fetchAllPosts } from './postsThunks';
+import { fetchAllPosts } from './posts-thunks';
 
 
 interface PostsState {
@@ -42,10 +42,15 @@ const postsSlice = createSlice({
         state.allPosts = action.payload;
       }
       state.postsError = '';
+    })
+    .addCase(fetchAllPosts.rejected, (state, action) => {
+      state.isLoading = false;
+      if (typeof action.error.message === 'string')
+      state.postsError = action.error.message;
     });
   },
 });
 
 export const { setAllPosts, setPostsError } = postsSlice.actions;
 
-export default postsSlice;
+export default postsSlice.reducer;

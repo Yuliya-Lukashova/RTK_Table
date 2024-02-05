@@ -1,7 +1,8 @@
-import { createAsyncThunk } from '@reduxjs/toolkit';
+import { createAsyncThunk, isRejectedWithValue } from '@reduxjs/toolkit';
 import { AxiosError } from 'axios';
 
 import api from '../api';
+import { DEFAULT_ERROR_MESSAGE } from '../constants'
 import { Post } from '../types';
 
 export const fetchAllPosts = createAsyncThunk(
@@ -11,7 +12,8 @@ export const fetchAllPosts = createAsyncThunk(
       const { data } = await api.get<Post[]>('posts');
       return 'posts' in data ? data.posts : [];
     } catch (err: unknown) {
-      if (err instanceof AxiosError) console.log(err.message);
+      if (err instanceof AxiosError) return isRejectedWithValue(err.response?.data.message);
+      return DEFAULT_ERROR_MESSAGE;
     }
   }
 );
