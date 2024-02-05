@@ -3,6 +3,7 @@ import {
   PayloadAction,
 } from '@reduxjs/toolkit';
 
+import { DEFAULT_ERROR_MESSAGE } from '../constants';
 import type { Post } from '../types';
 import { fetchAllPosts } from './posts-thunks';
 
@@ -45,8 +46,10 @@ const postsSlice = createSlice({
     })
     .addCase(fetchAllPosts.rejected, (state, action) => {
       state.isLoading = false;
-      if (typeof action.error.message === 'string')
-      state.postsError = action.error.message;
+      if (typeof action.payload === 'string') {
+        state.postsError = action.payload; 
+      }
+      state.postsError = DEFAULT_ERROR_MESSAGE
     });
   },
 });

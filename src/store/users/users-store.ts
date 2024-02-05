@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
+import { DEFAULT_ERROR_MESSAGE } from '../constants';
 import type { User } from '../types';
 import { fetchUsers } from './users-thunks';
 
@@ -42,8 +43,10 @@ const usersSlice = createSlice({
       })
       .addCase(fetchUsers.rejected, (state, action) => {
         state.isLoading = false;
-        if (typeof action.error.message === 'string')
-        state.usersError = action.error.message; 
+        if (typeof action.payload === 'string') {
+          state.usersError = action.payload; 
+        }
+        state.usersError = DEFAULT_ERROR_MESSAGE
       });
   },
 });
