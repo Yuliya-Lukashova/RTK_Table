@@ -40,7 +40,7 @@ const postsSlice = createSlice({
     .addCase(fetchAllPosts.fulfilled, (state, action) => {
       state.isLoading = false;
       if(Array.isArray(action.payload)) {
-        state.allPosts = action.payload;
+      state.allPosts = [...state.allPosts, ...action.payload];
       }
       state.postsError = '';
     })
