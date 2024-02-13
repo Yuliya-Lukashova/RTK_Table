@@ -1,4 +1,4 @@
-import { Post } from '../../src/store/types/index';
+import { Post } from '../store/types/index';
 
 export const getUserTags = (userPosts: Post[]): string[] => {
     return userPosts

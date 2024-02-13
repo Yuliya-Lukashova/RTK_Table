@@ -12,6 +12,3 @@ export interface Post {
   tags: string[];
   reactions: number;
 }
-
-export type RootState = ReturnType<typeof store.getStore>;
-export type AppDispatch = typeof store.dispatch;

@@ -1,17 +1,22 @@
-import { type FC,useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useEffect, useMemo } from 'react';
 
-import { getUniqueTags } from '../../helpers/getUniqueTags';
-import { fetchAllPosts } from '../../store/posts/posts-thunks';
-import type { AppDispatch,RootState, User } from '../../store/types';
-import { fetchUsers } from '../../store/users/users-thunks';
-import { TableItemTD, TableItemTH } from '../TableItem/TableItem';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { User } from '../../store/types';
+import { TableItemWrapper } from '../TableItem/TableItemWrapper';
+import { 
+  fetchAllPosts,
+  fetchUsers,
+  getUniqueTags,
+  TableItemTH
+} from '.';
 
-const Table: FC = () => {
-  const dispatch = useDispatch<AppDispatch>();
-  const { users } = useSelector((state: RootState) => state.users);
-  const { allPosts } = useSelector((state: RootState) => state.posts);
 
+const Table = (): JSX.Element => {
+  const dispatch = useAppDispatch();
+  const users = useAppSelector((state) => state.users.users);
+  const allPosts = useAppSelector((state) => state.posts.allPosts);
+  const uniqueTags = useMemo(() => getUniqueTags(allPosts), [allPosts]);
+  
   useEffect(() => {
     dispatch(fetchUsers());
   }, []);
@@ -19,8 +24,6 @@ const Table: FC = () => {
   useEffect(() => {
     if (users.length > 0) dispatch(fetchAllPosts(users));
   }, [users]);
-
-  const uniqueTags = getUniqueTags(allPosts);
 
   return (
     <table>
@@ -34,7 +37,10 @@ const Table: FC = () => {
       </thead>
       <tbody>
         {users.map((user: User) => (
-          <TableItemTD key={user.id} user={user} allPosts={allPosts} />
+          <TableItemWrapper 
+            key={user.id}
+            allPosts={allPosts}
+            user={user}/>
         ))}
       </tbody>
     </table>
