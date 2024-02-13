@@ -1,9 +1,7 @@
-function App() {
-  
-  return (
-    <>
-    </>
-  )
+import Table from './components/Table/Table'
+
+const App= (): JSX.Element => {
+return <Table />
 }
 
-export default App
+export default App;
